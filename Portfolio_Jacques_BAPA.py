@@ -23,29 +23,49 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- SIDEBAR : CONTACT & INFO ---
-# --- MODIFICATION ICI : Ta vraie photo ---
-    # On vérifie si l'image existe pour éviter un bug si le fichier n'est pas encore uploadé
-    if os.path.exists("JacquesBAPApdp.jpg"):
-        st.image("JacquesBAPApdp.jpg", width=180) # Tu peux ajuster width (taille)
+with st.sidebar:
+    st.title("Jacques BAPA")
+    st.markdown("**Ingénieur Financier & Développeur**")
+    
+    # --- TA PHOTO DE PROFIL ---
+    # Assure-toi que "JacquesBAPApdp.jpg" est bien sur GitHub
+    profile_pic = "JacquesBAPApdp.jpg"
+    
+    if os.path.exists(profile_pic):
+        st.image(profile_pic, width=200)
     else:
-        # Image de secours si ta photo n'est pas trouvée
+        # Image par défaut si ta photo ne s'affiche pas encore
         st.image("https://ui-avatars.com/api/?name=Jacques+Bapa&background=1e3a8a&color=fff&size=200")
     
     st.caption("Étudiant ESIGELEC")
     
     st.markdown("---")
     
-    st.markdown("---")
+    # --- CONTACT ---
     st.markdown("### 📞 Contact")
     st.markdown("📍 **Rouen, France**")
     st.markdown("📧 jacques.bapa@groupe-esigelec.org")
     st.markdown("📱 +33(0)7 80 25 50 14")
-    st.markdown("[🔗 LinkedIn](https://www.linkedin.com/in/jacques-bapa-aa529a219/)")
+    
+    # --- LINKEDIN PREMIUM ---
+    st.markdown("""
+    <a href="https://www.linkedin.com/in/jacques-bapa-aa529a219/" target="_blank" style="text-decoration: none; color: inherit;">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 5px 0;">
+            <span style="font-size: 1.2em;">🔗</span>
+            <div>
+                <span style="font-weight: bold; color: #0077b5;">LinkedIn</span>
+                <span style="background-color: #f8c77e; color: #783905; padding: 2px 6px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-left: 5px;">PREMIUM</span>
+                <br>
+                <span style="font-size: 0.8em; color: #64748b;">🟢 Profil Ouvert (Message gratuit)</span>
+            </div>
+        </div>
+    </a>
+    """, unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown("### 📥 Téléchargement")
     
-    # --- LOGIQUE DE TÉLÉCHARGEMENT DU PDF ---
+    # --- CV PDF ---
     pdf_file_path = "CV_Jacques_BAPA.pdf"
     
     if os.path.exists(pdf_file_path):
@@ -58,7 +78,6 @@ st.markdown("""
             )
     else:
         st.warning("Le fichier CV n'est pas encore en ligne.")
-        # Bouton inactif pour l'exemple
         st.download_button("📄 CV Indisponible", data=b"", disabled=True)
 
 # --- SECTION HÉRO ---
@@ -173,4 +192,3 @@ display_timeline_item("2020 - 2023", "Classe Prépa", "Prépavogt - Cameroun", "
 
 st.markdown("---")
 st.markdown("<center>© 2025 Jacques BAPA - Portfolio Interactif</center>", unsafe_allow_html=True)
-
