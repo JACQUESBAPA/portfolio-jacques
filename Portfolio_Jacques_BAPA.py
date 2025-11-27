@@ -1,7 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
-from datetime import datetime
-import os # Import nécessaire pour gérer les chemins de fichiers
+import os
 
 # --- CONFIGURATION DE LA PAGE ---
 st.set_page_config(
@@ -11,41 +10,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- STYLE CSS PERSONNALISÉ (Thème Blue FinTech) ---
+# --- STYLE CSS PERSONNALISÉ ---
 st.markdown("""
 <style>
-    /* Titres principaux en Bleu Navy */
-    h1, h2, h3 {
-        color: #1e3a8a;
-    }
-    /* Style pour les onglets */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        height: 50px;
-        white-space: pre-wrap;
-        border-radius: 4px 4px 0px 0px;
-        font-weight: 600;
-    }
-    /* Personnalisation de la Sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #f8fafc;
-        border-right: 1px solid #e2e8f0;
-    }
-    /* Timeline style helper */
-    .timeline-date {
-        font-weight: bold;
-        color: #1e3a8a;
-    }
-    .timeline-title {
-        font-weight: bold;
-        font-size: 1.1em;
-    }
-    .timeline-company {
-        color: #64748b;
-        font-style: italic;
-    }
+    h1, h2, h3 { color: #1e3a8a; }
+    .stTabs [data-baseweb="tab-list"] { gap: 10px; }
+    .stTabs [data-baseweb="tab"] { height: 50px; white-space: pre-wrap; font-weight: 600; border-radius: 4px 4px 0px 0px; }
+    .timeline-date { font-weight: bold; color: #1e3a8a; }
+    .timeline-title { font-weight: bold; font-size: 1.1em; }
+    .timeline-company { color: #64748b; font-style: italic; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -53,10 +26,10 @@ st.markdown("""
 with st.sidebar:
     st.title("Jacques BAPA")
     st.markdown("**Ingénieur Financier & Développeur**")
+    # Image de profil (tu pourras la remplacer par ta propre photo plus tard)
     st.image("https://ui-avatars.com/api/?name=Jacques+Bapa&background=1e3a8a&color=fff&size=200", caption="Étudiant ESIGELEC")
     
     st.markdown("---")
-    
     st.markdown("### 📞 Contact")
     st.markdown("📍 **Rouen, France**")
     st.markdown("📧 jacques.bapa@groupe-esigelec.org")
@@ -64,21 +37,23 @@ with st.sidebar:
     st.markdown("[🔗 LinkedIn](https://www.linkedin.com/in/jacques-bapa-aa529a219/)")
     
     st.markdown("---")
-    
     st.markdown("### 📥 Téléchargement")
     
-    # CORRECTION ICI : Utilisation de __file__ pour éviter l'erreur FileNotFoundError
-    # Cela permet d'ouvrir le script actuel quel que soit son nom.
-    # Dans un cas réel, remplacez __file__ par le chemin vers votre PDF (ex: "CV_Jacques_BAPA.pdf")
-    with open(__file__, "rb") as file: 
-        st.download_button(
-            label="📄 Télécharger mon CV",
-            data=file, 
-            file_name="CV_Jacques_BAPA.pdf",
-            mime="application/pdf",
-            disabled=False # Activé pour que vous puissiez tester le bouton
-        )
-    st.caption("*Le bouton télécharge ce fichier Python comme exemple en l'absence de PDF réel.*")
+    # --- LOGIQUE DE TÉLÉCHARGEMENT DU PDF ---
+    pdf_file_path = "CV_Jacques_BAPA.pdf"
+    
+    if os.path.exists(pdf_file_path):
+        with open(pdf_file_path, "rb") as file:
+            st.download_button(
+                label="📄 Télécharger mon CV",
+                data=file,
+                file_name="CV_Jacques_BAPA.pdf",
+                mime="application/pdf"
+            )
+    else:
+        st.warning("Le fichier CV n'est pas encore en ligne.")
+        # Bouton inactif pour l'exemple
+        st.download_button("📄 CV Indisponible", data=b"", disabled=True)
 
 # --- SECTION HÉRO ---
 col1, col2 = st.columns([2, 1])
@@ -94,7 +69,6 @@ with col1:
     st.info("🎯 **Objectif :** Mettre à profit ma double compétence (Finance de Marché + Dev Python/Web) au sein d'une équipe de trading, de structuration ou de recherche quantitative.")
 
 with col2:
-    # Petit concept art en code (Plotly Indicator)
     fig_gauge = go.Figure(go.Indicator(
         mode = "gauge+number",
         value = 100,
@@ -108,105 +82,70 @@ st.markdown("---")
 
 # --- SECTION COMPÉTENCES (RADAR CHART) ---
 st.header("🧬 Mon ADN Professionnel")
-
 col_skills_text, col_skills_chart = st.columns([1, 1])
 
 with col_skills_text:
     st.markdown("### Une Double Compétence Rare")
     st.write("Mon profil se distingue par l'équilibre.")
-    
     st.markdown("""
-    - **📊 Ingénierie Financière :** Gestion du Risque, Calcul Stochastique, Pricing d'Options/Obligations, VaR.
-    - **💻 Tech & Dev :** Python (Data Science), VBA, Full-Stack (Laravel, React), SQL, API.
-    - **🤝 Soft Skills :** Discipline (Tennis Compétition), Pédagogie (Professeur), Leadership.
+    - **📊 Ingénierie Financière :** Gestion du Risque, Calcul Stochastique, Pricing, VaR.
+    - **💻 Tech & Dev :** Python, VBA, Full-Stack (Laravel, React), SQL.
+    - **🤝 Soft Skills :** Discipline (Tennis), Pédagogie, Leadership.
     """)
-    
-    st.success("💡 **Pourquoi c'est important ?** Je peux comprendre les besoins complexes des traders ET implémenter les solutions techniques sans intermédiaire.")
 
 with col_skills_chart:
-    categories = ['Ingénierie Financière', 'Développement Web', 'Data Science/BI', 
-                  'Gestion de Risque', 'Langues (Anglais/Français)', 'Soft Skills']
+    categories = ['Ingénierie Fi.', 'Dev Web', 'Data Science', 'Risque', 'Anglais', 'Soft Skills']
     values = [90, 85, 80, 88, 95, 90]
-
     fig = go.Figure(data=go.Scatterpolar(
-        r=values,
-        theta=categories,
-        fill='toself',
-        name='Jacques BAPA',
-        line=dict(color='#1e3a8a'),
-        fillcolor='rgba(30, 58, 138, 0.2)'
+        r=values, theta=categories, fill='toself', name='Jacques BAPA',
+        line=dict(color='#1e3a8a'), fillcolor='rgba(30, 58, 138, 0.2)'
     ))
-
-    fig.update_layout(
-        polar=dict(
-            radialaxis=dict(
-                visible=True,
-                range=[0, 100]
-            )),
-        showlegend=False,
-        margin=dict(l=40, r=40, t=20, b=20),
-        height=350
-    )
+    fig.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False, height=350, margin=dict(l=40, r=40, t=20, b=20))
     st.plotly_chart(fig, use_container_width=True)
 
 st.markdown("---")
 
-# --- SECTION PROJETS (INTERACTIVE TABS) ---
+# --- SECTION PROJETS ---
 st.header("🛠️ Projets Réalisés")
 st.markdown("Explorez mes projets sous deux angles : **Business** (Finance) ou **Technique** (Code).")
 
-# Projet 1
 with st.container():
     st.subheader("1. Gestion de Portefeuilles Financiers")
-    
-    tab_fin, tab_tech = st.tabs(["💼 Vision Finance (Business)", "💻 Vision Tech (Code)"])
-    
+    tab_fin, tab_tech = st.tabs(["💼 Vision Finance", "💻 Vision Tech"])
     with tab_fin:
         st.markdown("""
-        *Focus : Asset Management & Performance*
-        - **Suivi Multi-Actifs :** Gestion centralisée d'actions, obligations et fonds.
-        - **Analyse de Performance :** Calculs de rendements historiques et volatilité.
-        - **Allocation d'Actifs :** Outil visuel pour optimiser la diversification sectorielle et géographique.
-        - **Aide à la décision :** Tableaux de bord pour le rééquilibrage stratégique.
+        - **Suivi Multi-Actifs :** Gestion centralisée d'actions et fonds.
+        - **Performance :** Calculs de rendements et volatilité.
+        - **Allocation :** Optimisation sectorielle et géographique.
         """)
-        
     with tab_tech:
         st.markdown("""
-        *Stack : Laravel (PHP), MySQL, JS*
-        - **Architecture MVC :** Code modulaire et maintenable.
-        - **Base de Données Relationnelle :** Schéma complexe pour gérer les historiques de prix et transactions.
-        - **Data Visualization :** Intégration de librairies JS pour les graphiques dynamiques.
-        - **Sécurité :** Gestion des authentifications et protection des données sensibles.
+        - **Stack :** Laravel (PHP), MySQL, JS.
+        - **Architecture MVC :** Code modulaire.
+        - **Data Viz :** Graphiques dynamiques JS.
         """)
 
 st.markdown("---")
 
-# Projet 2
 with st.container():
-    st.subheader("2. Simulateur de Portefeuille Obligataire")
-    
-    tab_fin2, tab_tech2 = st.tabs(["📉 Vision Finance (Quant)", "🐍 Vision Tech (Algo)"])
-    
+    st.subheader("2. Simulateur Obligataire")
+    tab_fin2, tab_tech2 = st.tabs(["📉 Vision Quant", "🐍 Vision Algo"])
     with tab_fin2:
         st.markdown("""
-        *Focus : Fixed Income & Risk Management*
-        - **Pricing :** Valorisation d'obligations et calcul du Yield to Maturity (YTM).
-        - **Indicateurs de Risque :** Calcul automatisé de la **Duration**, Convexité et Sensibilité.
-        - **Stress Tests :** Simulation de chocs de taux (+/- 100bps) et impact sur le P&L.
-        - **Value-at-Risk (VaR) :** Estimation des pertes potentielles.
+        - **Pricing :** Calcul du Yield to Maturity (YTM).
+        - **Risque :** Duration, Convexité, Sensibilité.
+        - **VaR :** Simulation de stress tests (+/- 100bps).
         """)
-        
     with tab_tech2:
         st.markdown("""
-        *Stack : Python, VBA, Web*
-        - **Algorithmes Financiers :** Implémentation des formules de mathématiques financières (Cash Flows actualisés).
-        - **Simulation :** Logique de calcul performante pour les scénarios de stress.
-        - **Interactivité :** Interface permettant de modifier les paramètres de courbe de taux en temps réel.
+        - **Stack :** Python, VBA, Streamlit.
+        - **Algo :** Implémentation de cash flows actualisés.
+        - **Simulation :** Calcul temps réel.
         """)
 
 st.markdown("---")
 
-# --- SECTION PARCOURS (TIMELINE) ---
+# --- SECTION PARCOURS ---
 st.header("🎓 Parcours & Expériences")
 
 def display_timeline_item(date, title, company, details, icon="🎓"):
@@ -218,43 +157,13 @@ def display_timeline_item(date, title, company, details, icon="🎓"):
         st.markdown(f"<span class='timeline-company'>{company}</span>", unsafe_allow_html=True)
         st.markdown(details)
 
-display_timeline_item(
-    "2023 - 2026",
-    "Diplôme d'Ingénieur en Ingénierie Financière",
-    "ESIGELEC - Rouen, France",
-    "**Majeure Marchés Financiers.**<br>Cours : Gestion du Risque, Calcul Stochastique, BI, IA, Blockchain."
-)
-
+display_timeline_item("2023 - 2026", "Diplôme d'Ingénieur Finance", "ESIGELEC - Rouen", "**Majeure Marchés Financiers.**<br>Gestion du Risque, Calcul Stochastique.")
 st.divider()
-
-display_timeline_item(
-    "Juil - Oct 2025",
-    "Stagiaire Développement Full-Stack",
-    "Uk Software Company - Birmingham, UK",
-    "Développement d'apps Web (Laravel/MySQL), conception d'API performantes et analyse concurrentielle (Tier 1 à Tier 3).",
-    icon="💼"
-)
-
+display_timeline_item("Juil - Oct 2025", "Stagiaire Full-Stack", "Uk Software Company - UK", "Développement Web Laravel/MySQL, API.", icon="💼")
 st.divider()
-
-display_timeline_item(
-    "Mai - Août 2023",
-    "Stagiaire Assistant Comptable",
-    "Macoria PVC - Douala, Cameroun",
-    "Tenue de la comptabilité, rapprochements bancaires et participation aux rituels **Agile/SCRUM**.",
-    icon="💼"
-)
-
+display_timeline_item("Mai - Août 2023", "Assistant Comptable", "Macoria PVC - Cameroun", "Comptabilité et méthode Agile/SCRUM.", icon="💼")
 st.divider()
+display_timeline_item("2020 - 2023", "Classe Prépa", "Prépavogt - Cameroun", "Maths, Physique, SI.", icon="🎓")
 
-display_timeline_item(
-    "2020 - 2023",
-    "Classe Prépa Ingénieur",
-    "Prépavogt - Yaoundé, Cameroun",
-    "Mathématiques, Statistiques, Physique, Sciences de l'Ingénieur.",
-    icon="🎓"
-)
-
-# --- FOOTER ---
 st.markdown("---")
-st.markdown("<center>© 2025 Jacques BAPA - Réalisé avec Streamlit & Python 🐍</center>", unsafe_allow_html=True)
+st.markdown("<center>© 2025 Jacques BAPA - Portfolio Interactif</center>", unsafe_allow_html=True)
