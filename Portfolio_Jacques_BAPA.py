@@ -23,11 +23,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- SIDEBAR : CONTACT & INFO ---
-with st.sidebar:
-    st.title("Jacques BAPA")
-    st.markdown("**Ingénieur Financier & Développeur**")
-    # Image de profil (tu pourras la remplacer par ta propre photo plus tard)
-    st.image("https://ui-avatars.com/api/?name=Jacques+Bapa&background=1e3a8a&color=fff&size=200", caption="Étudiant ESIGELEC")
+# --- MODIFICATION ICI : Ta vraie photo ---
+    # On vérifie si l'image existe pour éviter un bug si le fichier n'est pas encore uploadé
+    if os.path.exists("JacquesBAPApdp.jpg"):
+        st.image("JacquesBAPApdp.jpg", width=180) # Tu peux ajuster width (taille)
+    else:
+        # Image de secours si ta photo n'est pas trouvée
+        st.image("https://ui-avatars.com/api/?name=Jacques+Bapa&background=1e3a8a&color=fff&size=200")
+    
+    st.caption("Étudiant ESIGELEC")
+    
+    st.markdown("---")
     
     st.markdown("---")
     st.markdown("### 📞 Contact")
@@ -167,3 +173,4 @@ display_timeline_item("2020 - 2023", "Classe Prépa", "Prépavogt - Cameroun", "
 
 st.markdown("---")
 st.markdown("<center>© 2025 Jacques BAPA - Portfolio Interactif</center>", unsafe_allow_html=True)
+
